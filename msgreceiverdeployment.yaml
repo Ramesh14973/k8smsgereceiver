@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: msgreceiverlb
+  name: k8smsgereceiver-v1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: msgreceiverlb
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: msgreceiverlb
+    spec:
+      containers:
+      - image: rameshsubramani/messagespark:latest
+        name: k8smsgereceiver-v1
+        ports:
+        - containerPort: 8082
