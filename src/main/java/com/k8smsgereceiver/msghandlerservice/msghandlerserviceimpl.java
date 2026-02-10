@@ -50,7 +50,7 @@ public class msghandlerserviceimpl implements msghandlerservice {
 		info("message revceived in info :"+mbean.getCustid());
 		info("message revceived in info :"+Consts.get12digitUUID());
 		
-		//propclient.getLip4maxis();
+		propclient.getLip4maxis();
 		
 		info("Maxis Properties in info :"+propclient.getLip4maxis());
 		
