@@ -1,0 +1,55 @@
+pipeline{
+    agent any
+    stages {
+        stage('sourcedownload'){
+            steps{
+                git credentialsId: 'msgreceiver', url: 'https://github.com/Ramesh14973/k8smsgereceiver.git'
+            } // End of step source download
+        } // stage of sourcedownload
+        stage('test'){
+            steps{
+                sh 'mvn test'
+            } // End of step list outsourced
+        } // stage of list out
+        stage('mvn build'){
+            steps{
+                sh 'mvn clean install -DskipTests=true'
+            } // End of step list outsourced
+        } // stage of build
+        stage('docker login'){
+            steps{
+                sh 'docker login -u "rameshsubramani" docker.io -p Ramesh!4973'
+            } // End of step login
+        } // stage of build
+        stage('create Dcoker Image'){
+            steps{
+                sh 'docker build -t properties:latest .'
+            } // End of step create docker image
+        } // stage of build
+        stage('tag dockerimage'){
+            steps{
+                sh 'docker tag properties:latest rameshsubramani/messagespark:latest'
+            } // End of step create docker image
+        } // stage of tag image
+        stage('push dockerimage'){
+            steps{
+                sh 'docker push rameshsubramani/messagespark:latest'
+            } // End of step create docker image
+        } // stage of push
+        stage('apply into kubectl'){
+            steps{
+                sh 'kubectl apply -f msgreceiverdeployment.yaml'
+            } // End of step create docker image
+        } // stage of apply into kubernetes
+        stage('expose to service'){
+            steps{
+                 sh 'kubectl expose deployment k8smsgereceiver-v1 --port=8082 --target-port=8082  --name=k8smsgereceiver-service --type=LoadBalancer'
+            } // End of step create docker image
+        } // stage of expose into service
+        stage('patch IP to service'){
+            steps{
+                 sh 'kubectl patch svc k8smsgereceiver-service -p \'{"spec":{"externalIPs":["192.168.0.102"]}}\''
+            } // End of step create docker image
+        } // stage of expose into service
+    } // End of stages
+} // End of pipeline

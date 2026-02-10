@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.k8smsgereceiver.feignclient.mnpdbfeignclient;
 import com.k8smsgereceiver.feignclient.msginsertClient;
+import com.k8smsgereceiver.feignclient.propertiesclient;
 import com.k8smsgereceiver.sysprop.Consts;
 import com.k8smsgereceiver.sysprop.msgbean;
 import com.k8smsgereceiver.sysprop.respondbean;
@@ -36,6 +37,9 @@ public class msghandlerserviceimpl implements msghandlerservice {
     
     @Autowired
     private mnpdbfeignclient mnpfclient;
+    
+    @Autowired
+    private propertiesclient propclient;
 	
 	@Override
 	public respondbean receivemessage(msgbean mbean) {
@@ -46,9 +50,11 @@ public class msghandlerserviceimpl implements msghandlerservice {
 		info("message revceived in info :"+mbean.getCustid());
 		info("message revceived in info :"+Consts.get12digitUUID());
 		
+		//propclient.getLip4maxis();
+		
+		info("Maxis Properties in info :"+propclient.getLip4maxis());
 		
 		msginid = mbean.getCustid().substring(0, 4).toString()+Consts.get12digitUUID();
-		
 		
 		
         //Communicate microservices Using FeignClient
