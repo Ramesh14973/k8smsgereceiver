@@ -15,7 +15,7 @@ public interface propertiesclient {
 	@GetMapping("/getLip4maxis")
 	public String getLip4maxis();
 	
-	@GetMapping("/getLip4telco")
-	public String getLip4telco();
+	@GetMapping("/getLip4maxistelco")
+	public String getLip4maxistelco();
 	
 } // End of propertiesclient
