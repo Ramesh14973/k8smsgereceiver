@@ -1,5 +1,8 @@
 pipeline{
     agent any
+    environment{
+		DOCKER_IMAGE='k8smsgereceiver'	
+	}
     stages {
         stage('sourcedownload'){
             steps{
@@ -23,12 +26,12 @@ pipeline{
         } // stage of build
         stage('create Dcoker Image'){
             steps{
-                sh 'docker build -t properties:latest .'
+                sh 'docker build -t $DOCKER_IMAGE:$BUILD_NUMBER .'
             } // End of step create docker image
         } // stage of build
         stage('tag dockerimage'){
             steps{
-                sh 'docker tag properties:latest rameshsubramani/messagespark:latest'
+                sh 'docker tag $DOCKER_IMAGE:$BUILD_NUMBER rameshsubramani/messagespark:latest'
             } // End of step create docker image
         } // stage of tag image
         stage('push dockerimage'){
@@ -40,7 +43,7 @@ pipeline{
             steps{
                 sh 'kubectl apply -f msgreceiverdeployment.yaml'
             } // End of step create docker image
-        } // stage of apply into kubernetes
+        } // stage of apply into kubernetes 
         stage('expose to service'){
             steps{
                  sh 'kubectl expose deployment k8smsgereceiver-v1 --port=8082 --target-port=8082  --name=k8smsgereceiver-service --type=LoadBalancer'

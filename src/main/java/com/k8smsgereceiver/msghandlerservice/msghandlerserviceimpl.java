@@ -53,6 +53,7 @@ public class msghandlerserviceimpl implements msghandlerservice {
 		//propclient.getLip4maxis();
 		
 		info("Maxis Properties in info :"+propclient.getLip4maxis());
+		info("Maxis IP changed in source  ---->"+propclient.getLip4telco());
 		
 		msginid = mbean.getCustid().substring(0, 4).toString()+Consts.get12digitUUID();
 		
