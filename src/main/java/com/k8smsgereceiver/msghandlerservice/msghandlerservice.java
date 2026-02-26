@@ -13,4 +13,7 @@ public interface msghandlerservice {
 
 	public respondbean receivemessage(msgbean mbean); 
 	
+	//public String getLip4maxis();
+	//  public String fallbackUserData( Throwable throwable);
+	
 } // End of 

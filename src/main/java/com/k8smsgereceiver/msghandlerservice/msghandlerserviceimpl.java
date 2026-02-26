@@ -18,6 +18,8 @@ import com.k8smsgereceiver.sysprop.Consts;
 import com.k8smsgereceiver.sysprop.msgbean;
 import com.k8smsgereceiver.sysprop.respondbean;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
 /**
  * 
  */
@@ -42,7 +44,7 @@ public class msghandlerserviceimpl implements msghandlerservice {
     private propertiesclient propclient;
 	
 	@Override
-	public respondbean receivemessage(msgbean mbean) {
+	public respondbean receivemessage(msgbean mbean){
 		respondbean resbean=null;
 		String msginid =  null;
 		try {
@@ -53,6 +55,7 @@ public class msghandlerserviceimpl implements msghandlerservice {
 		//propclient.getLip4maxis();
 		
 		info("Maxis Properties in info ==> :"+propclient.getLip4maxis());
+
 		info("Maxis IP changed in source  ==>"+propclient.getLip4maxistelco());
 		
 		msginid = mbean.getCustid().substring(0, 4).toString()+Consts.get12digitUUID();
@@ -76,11 +79,23 @@ public class msghandlerserviceimpl implements msghandlerservice {
 		
 		// must write code to check validation
 		}catch(Exception e) 
-		{e.printStackTrace();}
+		{ info("Exception in msghandlerserivce ==> :"+e.getMessage());
+			//e.printStackTrace();
+		}
+		
 		return resbean;
 	} // end of 
 
+	/*
+	@CircuitBreaker(name = "maxisprop", fallbackMethod = "fallbackUserData")
+    public String getLip4maxis() {
+        return propclient.getLip4maxis();
+    }
 	
+    public String fallbackUserData( Throwable throwable) {
+        return "Default maxis Operator properties due to service unavailability";
+    }
+    */
 	private void debug(String strPrint) {
 		
 		logger.debug(strPrint);

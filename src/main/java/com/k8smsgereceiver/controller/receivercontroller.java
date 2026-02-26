@@ -25,12 +25,14 @@ public class receivercontroller {
 	@Autowired
 	private msghandlerservice msghandservice;
 	
+	
+	
 	@PostMapping("/receiver")
 	public  ResponseEntity<respondbean> receivemessage(@RequestBody msgbean mbean) {
 			
 		info("receivercontroller Invoked ===================================="+mbean.getCustid());
 		//msghandservice.receivemessage(mbean);
-		
+		//info("receivercontroller Invoked ===================================="+msghandservice.getLip4maxis());
 		
 		return new ResponseEntity<respondbean>(msghandservice.receivemessage(mbean),HttpStatus.CREATED);
 				
