@@ -39,6 +39,16 @@ pipeline{
                 sh 'docker push rameshsubramani/messagespark:latest'
             } // End of step create docker image
         } // stage of push
+        stage('delete deployment from kubectl') {
+            steps {
+                sh 'kubectl delete deployment k8smsgereceiver-v1'
+            } // End of step
+        } // End of delete deployment from kubectl
+        stage('delete service from kubectl') {
+            steps {
+                sh 'kubectl delete svc k8smsgereceiver-service'
+            } // End of step
+        } // End of delete service from kubectl
         stage('apply into kubectl'){
             steps{
                 sh 'kubectl apply -f msgreceiverdeployment.yaml'
